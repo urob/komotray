@@ -18,7 +18,7 @@ For example, the first of the following icons indicates that workspace 1 on the 
     <img src="assets/icons/pause.ico" height="48" />
 </p>
 
-Setups with more than two monitors are supported but require adding a suitable collection of icons.
+Currently, I created icons for up to 9 workspaces and for 2 monitors. Setups with more workspaces or more monitors are supported but require adding a suitable collection of icons.
 
 ## Interaction
 
