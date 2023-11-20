@@ -6,6 +6,9 @@ A system tray status indicator for [komorebi](https://github.com/LGUG2Z/komorebi
 
 ## Status indicator
 
+> [!NOTE]
+> The preview icons below have white foregrounds. To see them, enable darkmode for your browser or Github.
+
 The icon indicates the currently focused monitor using <img src="assets/previews/0-1.png" height="16" /> and <img src="assets/previews/0-2.png" height="16" /> for the left and right monitor. The number at the center of the icon is the currently focused workspace *on the active monitor*.
 
 For example, the first of the following icons indicates that workspace 1 on the left monitor is focused. The second icon indicates that workspace 1 on the right monitor is focused, etc. The last icon indicates that komorebi is currently paused.
