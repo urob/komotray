@@ -2,19 +2,21 @@
 
 A system tray status indicator for [komorebi](https://github.com/LGUG2Z/komorebi/). It shows the focused workspace and monitor and can be used to interact with komorebi.
 
-![](assets/screenshot.png =x48)
+<img src="assets/screenshot.png" height="48" />
 
 ## Status indicator
 
-The icon indicates the currently focused monitor using ![](assets/icons/0-1.ico =16x) and ![](assets/icons/0-2.ico =16x) for the left and right monitor. The number at the center of the icon is the currently focused workspace *on the active monitor*.
+The icon indicates the currently focused monitor using <img src="assets/icons/0-1.ico" height="16" /> and <img src="assets/icons/0-2.ico" height="16" /> for the left and right monitor. The number at the center of the icon is the currently focused workspace *on the active monitor*.
 
-For instance, the first of the following icons indicates that workspace 1 on the left monitor is focused. The second icon indicates that workspace 1 on the right monitor is focused, etc. The last icon indicates that komorebi is currently paused.
+For example, the first of the following icons indicates that workspace 1 on the left monitor is focused. The second icon indicates that workspace 1 on the right monitor is focused, etc. The last icon indicates that komorebi is currently paused.
 
-![](assets/icons/1-1.ico =48x)
-![](assets/icons/1-2.ico =48x)
-![](assets/icons/2-1.ico =48x)
-![](assets/icons/2-2.ico =48x)
-![](assets/icons/pause.ico =48x)
+<p float="left">
+    <img src="assets/icons/1-1.ico" height="48" />
+    <img src="assets/icons/1-2.ico" height="48" />
+    <img src="assets/icons/2-1.ico" height="48" />
+    <img src="assets/icons/2-2.ico" height="48" />
+    <img src="assets/icons/pause.ico" height="48" />
+</p>
 
 Setups with more than two monitors are supported but require adding a suitable collection of icons.
 
