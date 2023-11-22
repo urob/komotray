@@ -1,23 +1,23 @@
 #SingleInstance, force
-#HotkeyInterval 20
-#MaxHotkeysPerInterval 20000
+#NoEnv
 
 #Include, %A_ScriptDir%\lib\JSON.ahk
 
 ; Set common config options
-global IconPath = A_ScriptDir . "/assets/icons/"
+global IconPath := A_ScriptDir . "/assets/icons/"
+global KomorebiConfig := A_ScriptDir . "/../komorebi/komorebi.json"
 
 ; ======================================================================
-; Auto Execute
+; Initialization
 ; ======================================================================
 
 ; Set up tray menu
 Menu, Tray, NoStandard
 Menu, Tray, add, Pause Komorebi, PauseKomorebi
 Menu, Tray, add, Restart Komorebi, StartKomorebi
-Menu, Tray, add                         ; separator line
-Menu, Tray, add, Reload Tray, Reload
-Menu, Tray, add, Exit Tray, Exit
+Menu, Tray, add  ; separator line
+Menu, Tray, add, Reload Tray, ReloadTray
+Menu, Tray, add, Exit Tray, ExitTray
 
 ; Define default action and activate it with single click
 Menu, Tray, Default, Pause Komorebi
@@ -26,8 +26,10 @@ Menu, Tray, Click, 1
 ; Initialize internal states
 IconState := -1
 global Screen := 0
-global TaskbarPrimaryID = 0
-global TaskbarSecondaryID = 0
+global LastTaskbarScroll := 0
+
+; Start the komorebi server
+;StartKomorebi(false)  ; uncomment to automatically start komorebi with this script
 
 ; ======================================================================
 ; Event Handler
@@ -45,7 +47,7 @@ Pipe := DllCall("CreateNamedPipe", "Str", PipePath, "UInt", OpenMode, "UInt", Pi
     , "UInt", 1, "UInt", BufferSize, "UInt", BufferSize, "UInt", 0, "Ptr", 0, "Ptr")
 if (Pipe = -1) {
     MsgBox, % "CreateNamedPipe: " A_LastError
-    Exit()
+    ExitTray()
 }
 
 ; Wait for Komorebi to connect
@@ -81,11 +83,23 @@ Loop {
     ; Update tray icon
     if (Paused | Screen << 1 | Workspace << 4 != IconState) {
         UpdateIcon(Paused, Screen, Workspace, ScreenQ.name, WorkspaceQ.name)
-        IconState := Paused | Screen << 1 | Workspace << 4 ; # of screens must be <= 2**3
+        IconState := Paused | Screen << 1 | Workspace << 4 ; use 3 bits for monitor (i.e. up to 8 monitors)
     }
 }
-MsgBox, An unexpected error has occured.
-Exit()
+Return
+
+; ======================================================================
+; Key Bindings
+; ======================================================================
+
+!x::WinMinimize, A     ; Alt + x
+!+c::WinClose, A       ; Shift + Alt + c
+!SC033::SwapScreens()  ; Alt + ,
+
+; Scroll taskbar to cycle workspaces
+#if MouseIsOver("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
+    WheelUp::OnTaskbarScroll("previous")
+    WheelDown::OnTaskbarScroll("next")
 
 ; ======================================================================
 ; Functions
@@ -95,18 +109,19 @@ Komorebi(arg) {
     RunWait % "komorebic.exe " . arg,, Hide
 }
 
-StartKomorebi() {
+StartKomorebi(reloadTray:=true) {
     Komorebi("stop --whkd")
-    Komorebi("start -c " . A_ScriptDir . "\..\komorebi\komorebi.json --whkd")
-    Reload()
+    Komorebi("start -c " . KomorebiConfig . " --whkd")
+    if (reloadTray)
+        ReloadTray()
 }
 
 PauseKomorebi() {
     Komorebi("toggle-pause")
 }
 
-SwapScreen() {
-    ; Swaps monitors. ToDo: Add safeguard for 3+ monitors
+SwapScreens() {
+    ; Swap monitors on a 2 screen setup. ToDo: Add safeguard for 3+ monitors
     Komorebi("swap-workspaces-with-monitor " . 1 - Screen)
 }
 
@@ -116,46 +131,36 @@ UpdateIcon(paused, screen, workspace, screenName, workspaceName) {
     if (!paused && FileExist(icon))
         Menu, Tray, Icon, %icon%
     else
-        Menu, Tray, Icon, % IconPath . "pause.ico" ; also acts as fallback
+        Menu, Tray, Icon, % IconPath . "pause.ico" ; also used as fallback
 }
 
-Reload() {
+ReloadTray() {
     DllCall("CloseHandle", "Ptr", Pipe)
     Reload
 }
 
-Exit() {
+ExitTray() {
     DllCall("CloseHandle", "Ptr", Pipe)
     Komorebi("stop --whkd")
     ExitApp
 }
 
 OnTaskbarScroll(dir) {
-    if (IsCursorHoveringTaskbar()) {
+    if (A_PriorKey != A_ThisHotkey) || (A_TickCount - LastTaskbarScroll > 1200) {
+        LastTaskbarScroll := A_TickCount
+        Komorebi("mouse-follows-focus disable")
         Komorebi("cycle-workspace " . dir)
-        Sleep, 500
+        ; ToDo: only re-enable if it was enabled before
+        Komorebi("mouse-follows-focus enable")
     }
 }
 
-IsCursorHoveringTaskbar() {
-    MouseGetPos,,, mouseHoveringID
-    if (!TaskbarPrimaryID) {
-        WinGet, TaskbarPrimaryID, ID, ahk_class Shell_TrayWnd
-    }
-    if (!TaskbarSecondaryID) {
-        WinGet, TaskbarSecondaryID, ID, ahk_class Shell_SecondaryTrayWnd
-    }
-    return (mouseHoveringID == taskbarPrimaryID || mouseHoveringID == TaskbarSecondaryID)
+; ======================================================================
+; Auxiliary Functions
+; ======================================================================
+
+MouseIsOver(WinTitle) {
+    MouseGetPos,,, Win
+    return WinExist(WinTitle . " ahk_id " . Win)
 }
-
-; ======================================================================
-; Key Bindings
-; ======================================================================
-
-!x::WinMinimize, A
-!+c::WinClose, A
-!SC033::SwapScreen() ; SC033 = ,
-
-~WheelUp::OnTaskbarScroll("previous") ; ~ makes hotkey available to other apps
-~WheelDown::OnTaskbarScroll("next")
 
