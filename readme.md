@@ -21,7 +21,7 @@ For example, the first of the following icons indicates that workspace 1 on the 
     <img src="assets/previews/pause.png" height="48" />
 </p>
 
-Currently, I created icons for up to 9 workspaces and for 2 monitors. Setups with more workspaces or more monitors are supported but require adding a suitable collection of icons.
+Currently, there are icons included for up to 9 workspaces and for 2 monitors. Setups with more workspaces or more monitors are supported but require adding a suitable collection of icons.
 
 ## Interaction
 
@@ -31,7 +31,7 @@ I haven't yet decided whether I want to use komo*Tray* as a one-stop-shop for al
 
 ## Usage
 
-To start the tray, simply run the AHK script or the bundled binary. If the komorebi server is already running (and isn't paused), then everything should be set. If the komorebi serves hasn't been started yet, then one can start by selecting "Restart Komorebi" from the tray's right-click menu.
+To start the tray, simply run the AHK script or the bundled binary. If the komorebi server is already running (and isn't paused), then everything should be set. If the komorebi server hasn't been started yet, then one can start it by selecting "Restart Komorebi" from the tray's right-click menu.
 
 ***Note:*** The first time komo*Tray* is started, the tray icon may eventual disappear in the overflow menu. If this happens simply drag & drop it back to the tray area. After doing this once, Windows should remember the position of komo*Tray* and always show it.
 
