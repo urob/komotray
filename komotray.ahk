@@ -146,8 +146,13 @@ ExitTray() {
 }
 
 OnTaskbarScroll(dir) {
-    if (A_PriorKey != A_ThisHotkey) || (A_TickCount - LastTaskbarScroll > 1200) {
-        LastTaskbarScroll := A_TickCount
+    ; This adds a state-dependent debounce timer to adress an issue where a single wheel
+    ; click spawns multiple clicks when a web browser is in focus.
+    _isBrowser := WinActive("ahk_class Chrome_WidgetWin_1") || WinActive("ahk_class MozillaWindowClass")
+    _t := _isBrowser ? 800 : 100
+    ; Total debounce time = _t[this_call] + _t[last_call] to address interim focus changes
+    if (A_PriorKey != A_ThisHotkey) || (A_TickCount - LastTaskbarScroll > _t) {
+        LastTaskbarScroll := A_TickCount + _t
         Komorebi("mouse-follows-focus disable")
         Komorebi("cycle-workspace " . dir)
         ; ToDo: only re-enable if it was enabled before
