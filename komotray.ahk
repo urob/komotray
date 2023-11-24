@@ -92,9 +92,10 @@ Return
 ; Key Bindings
 ; ======================================================================
 
-!x::WinMinimize, A     ; Alt + x
-!+c::WinClose, A       ; Shift + Alt + c
-!SC033::SwapScreens()  ; Alt + ,
+ !x::       WinMinimize, A  ; Alt + x
++!c::       WinClose, A     ; Shift + Alt + c
++!t::       WinSet, Style, ^0xC00000, A  ; Toggle Titlebar
+ !SC033::   SwapScreens()   ; Alt + ,
 
 ; Scroll taskbar to cycle workspaces
 #if MouseIsOver("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
