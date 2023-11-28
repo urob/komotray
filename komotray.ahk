@@ -4,8 +4,9 @@
 #Include, %A_ScriptDir%\lib\JSON.ahk
 
 ; Set common config options
+AutoStartKomorebi := true
 global IconPath := A_ScriptDir . "/assets/icons/"
-global KomorebiConfig := A_ScriptDir . "/../komorebi/komorebi.json"
+global KomorebiConfig := A_ScriptDir . "/komorebi-config/komorebi.json"
 
 ; ======================================================================
 ; Initialization
@@ -29,7 +30,9 @@ global Screen := 0
 global LastTaskbarScroll := 0
 
 ; Start the komorebi server
-;StartKomorebi(false)  ; uncomment to automatically start komorebi with this script
+Process, Exist, komorebi.exe
+if (!ErrorLevel && AutoStartKomorebi)
+    StartKomorebi(false)
 
 ; ======================================================================
 ; Event Handler
@@ -92,10 +95,8 @@ Return
 ; Key Bindings
 ; ======================================================================
 
- !x::       WinMinimize, A  ; Alt + x
-+!c::       WinClose, A     ; Shift + Alt + c
-+!t::       WinSet, Style, ^0xC00000, A  ; Toggle Titlebar
- !SC033::   SwapScreens()   ; Alt + ,
+; Load key bindings
+#Include, %A_ScriptDir%\komorebi-config\bindings.ahk
 
 ; Scroll taskbar to cycle workspaces
 #if MouseIsOver("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
@@ -111,8 +112,9 @@ Komorebi(arg) {
 }
 
 StartKomorebi(reloadTray:=true) {
-    Komorebi("stop --whkd")
-    Komorebi("start -c " . KomorebiConfig . " --whkd")
+    Komorebi("stop")
+    Komorebi("start -c " . KomorebiConfig)
+    Komorebi("focus-follows-mouse enable")  ; fix bug where option is ignored when server is restarted
     if (reloadTray)
         ReloadTray()
 }
@@ -142,7 +144,7 @@ ReloadTray() {
 
 ExitTray() {
     DllCall("CloseHandle", "Ptr", Pipe)
-    Komorebi("stop --whkd")
+    Komorebi("stop")
     ExitApp
 }
 

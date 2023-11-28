@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/master/schema.json",
+  "app_specific_configuration_path": "$Env:USERPROFILE/.config/komorebi/applications.yaml",
+  "window_hiding_behaviour": "Cloak",
+  "cross_monitor_move_behaviour": "Insert",
+  "alt_focus_hack": false,
+  "focus_follows_mouse": "Windows",
+  "default_workspace_padding": -10,
+  "default_container_padding": 10,
+  "active_window_border": false,
+  "unmanaged_window_operation_behaviour": "Op",
+  "float_rules": [
+    { "kind": "Exe", "id": "none.exe", "matching_strategy": "Regex" }
+  ],
+  "monitor_index_preferences": {
+    "0": { "left": 0, "top": 0, "right": 3840, "bottom": 2160 }
+  },
+  "monitors": [
+    {
+      "workspaces": [
+        { "name": "primary", "layout": "BSP" },
+        { "name": "tertiary", "layout": "BSP" }
+      ]
+    },
+    {
+      "workspaces": [
+        { "name": "secondary", "layout": "BSP" },
+        { "name": "quaternary", "layout": "BSP" }
+      ]
+    }
+  ]
+}
