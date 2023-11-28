@@ -2,6 +2,12 @@
 
 This directory contains my personal komorebi config. To use another configuration, replace the files in this directory, specify an alternative config path inside `komotray.ahk`, or start the komorebi server prior to starting komo*Tray*.
 
+## Key bindings
+
+My key bindings are made for Colemak, my keyboard layout of choice. Here's a quick reference chart:
+
+<img src="img/bindings.png" width="100%" />
+
 ## Install instructions
 
 The following sets up komo*Tray* as a one-stop-shop wrapper around komorebi.
@@ -30,5 +36,5 @@ komorebic fetch-app-specific-configuration
 ```
 ## ... and this is how it looks
 
-<img src="../assets/previews/config.png" width="100%" />
+<img src="img/desktop.png" width="100%" />
 
