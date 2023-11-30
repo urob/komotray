@@ -3,14 +3,14 @@
 ; Focus windows
  !m::       Komorebi("cycle-focus previous")
  !n::       Komorebi("cycle-focus next")
- !e::       Komorebi("cycle-monitor next")
- !o::       Komorebi("promote-focus")
+ !o::       Komorebi("cycle-monitor next")
+ !e::       Komorebi("promote-focus")
 
 ; Move windows
 +!m::       Komorebi("cycle-move previous")
 +!n::       Komorebi("cycle-move next")
-+!e::       Komorebi("cycle-move-to-monitor next")
-+!o::
++!o::       Komorebi("cycle-move-to-monitor next")
++!e::
             Komorebi("manage")
             Komorebi("promote")
 return
