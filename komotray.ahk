@@ -98,10 +98,15 @@ Return
 ; Load key bindings
 #Include, %A_ScriptDir%\komorebi-config\bindings.ahk
 
+; Alt + scroll to cycle workspaces
+!WheelUp::ScrollWorkspace("previous")
+!WheelDown::ScrollWorkspace("next")
+
 ; Scroll taskbar to cycle workspaces
 #if MouseIsOver("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
-    WheelUp::OnTaskbarScroll("previous")
-    WheelDown::OnTaskbarScroll("next")
+    WheelUp::ScrollWorkspace("previous")
+    WheelDown::ScrollWorkspace("next")
+#if
 
 ; ======================================================================
 ; Functions
@@ -148,7 +153,7 @@ ExitTray() {
     ExitApp
 }
 
-OnTaskbarScroll(dir) {
+ScrollWorkspace(dir) {
     ; This adds a state-dependent debounce timer to adress an issue where a single wheel
     ; click spawns multiple clicks when a web browser is in focus.
     _isBrowser := WinActive("ahk_class Chrome_WidgetWin_1") || WinActive("ahk_class MozillaWindowClass")
