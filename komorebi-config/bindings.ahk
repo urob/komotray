@@ -4,13 +4,13 @@
  !m::       Komorebi("cycle-focus previous")
  !n::       Komorebi("cycle-focus next")
  !e::       Komorebi("cycle-monitor next")
- !enter::   Komorebi("promote-focus")
+ !o::       Komorebi("promote-focus")
 
 ; Move windows
 +!m::       Komorebi("cycle-move previous")
 +!n::       Komorebi("cycle-move next")
 +!e::       Komorebi("cycle-move-to-monitor next")
-+!enter::
++!o::
             Komorebi("manage")
             Komorebi("promote")
 return
@@ -34,7 +34,7 @@ return
  !y::       Komorebi("flip-layout horizontal")
 +!y::       Komorebi("flip-layout vertical")
 
- !SC033::   SwapScreens()  ; Alt + ,
+ !?::   SwapScreens()
 
 ; Resize
  !l::       Komorebi("resize-axis horizontal increase")
