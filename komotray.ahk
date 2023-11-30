@@ -119,7 +119,6 @@ Komorebi(arg) {
 StartKomorebi(reloadTray:=true) {
     Komorebi("stop")
     Komorebi("start -c " . KomorebiConfig)
-    Komorebi("focus-follows-mouse enable")  ; fix bug where option is ignored when server is restarted
     if (reloadTray)
         ReloadTray()
 }
